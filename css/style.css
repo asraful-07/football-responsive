@@ -169,3 +169,15 @@ ul a{
     font-weight: 400;
     margin: 20px 0;
 }
+
+/* responsive mobile device */
+@media screen and (max-width: 576px){
+    .section-container{
+        max-width: 100%;
+        padding: 30px 20px;
+    }
+    ul{
+        /* flex-direction: column; */
+        display: none;
+    }
+}
