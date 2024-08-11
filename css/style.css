@@ -109,3 +109,32 @@ ul a{
     letter-spacing: 0%;
     margin: 16px 0;
 }
+
+/* about section code */
+.about-container{
+    display: flex;
+    justify-content: space-between;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 60px;
+}
+.about-title{
+    color: rgb(10, 8, 38);
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 60px;
+    letter-spacing: 0px;
+    margin-bottom: 10px;
+}
+.about-text{
+    color: rgb(108, 108, 108);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0px;
+    margin-bottom: 20px;
+}
+.about-image img{
+    width: 567px;
+    height: 427px;
+}
