@@ -7,7 +7,7 @@ export const app = express();
 app.use(cors({ origin: process.env.APP_URL || "*", credentials: true }));
 app.use(express.json());
 
-app.all("/api/auth/*", toNodeHandler(auth));
+app.all("/api/auth/*split", toNodeHandler(auth));
 
 app.get("/", async (req, res) => {
   res.status(200).json({ success: true, message: "Server on created" });
