@@ -1,3 +1,20 @@
 node_modules
 .env
 /generated/prisma
+
+
+{
+    "totpURI": "otpauth://totp/lab%20blog:john.doe%40example.com?secret=J4YWYZRTK42DMUDDONSGWLLILFNHG33WIV2VKZKFIRBUM5CGKVGQ&issuer=lab+blog&digits=6&period=30",
+    "backupCodes": [
+        "U9tYx-ADudi",
+        "NtR6x-qB3xn",
+        "V0TWX-Ue7eP",
+        "c2MH0-k2Lgo",
+        "kgz7X-Av6HE",
+        "kuvkE-OgSIq",
+        "UtPKe-rfU3T",
+        "pPnDI-yyKhO",
+        "Pee9P-gyxb6",
+        "uRJHN-Fj8cl"
+    ]
+}

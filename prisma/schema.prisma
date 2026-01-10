@@ -27,6 +27,7 @@ model Equipment {
   status       EquipmentStatus @default(AVAILABLE)
   location     String
   metadata     Json?
+  user         User @relation(fields: [userId], references: [id])
 
   usageLogs UsageLog[]
 
@@ -54,6 +55,7 @@ model UsageLog {
 
   @@map("usagelog")
   @@index([userId])
+  @@index([equipmentId])
 }
 
 model User {
@@ -66,6 +68,13 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+
+  twoFactorEnabled Boolean?    @default(false)
+  twofactors       TwoFactor[]
+  equipment     Equipment[]
+
+  role       String? @default("USER")
+  phone      String? @default("Unknown")
 
   @@unique([email])
   @@map("user")
@@ -81,6 +90,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
 
   @@unique([token])
   @@index([userId])
@@ -117,4 +128,16 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model TwoFactor {
+  id          String @id
+  secret      String
+  backupCodes String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([secret])
+  @@index([userId])
+  @@map("twoFactor")
 }
