@@ -1,19 +1,26 @@
 import { Request, Response, NextFunction } from "express";
 import { auth } from "../lib/auth";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { includes, success } from "better-auth/*";
 
 declare global {
   namespace Express {
     interface Request {
-      user: JwtPayload;
+      user?: {
+        id: string;
+        name: string;
+        email: string;
+        role: string;
+      };
     }
   }
 }
 
-export const authMiddleware = (
-  resource: "user" | "equipment",
-  action: string
-) => {
+export enum UserRole {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
+
+export const authMiddleware = (...roles: UserRole[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const session = await auth.api.getSession({
@@ -23,21 +30,19 @@ export const authMiddleware = (
       if (!session) {
         return res
           .status(401)
-          .json({ success: false, message: "Unauthorized token" });
+          .json({ success: false, message: "?Unauthorized token" });
       }
 
-      const hasPermission = await auth.api.userHasPermission({
-        body: {
-          userId: session?.user.id,
-          role: session?.user.role || ("user" as any),
-          permission: { [resource]: [action] },
-        },
-      });
-      if (!hasPermission || !hasPermission.success)
-        res.status(401).send({
-          message: `Forbidden: You do not have permission to ${action} ${resource}!`,
-        });
+      req.user = {
+        id: session.user.id,
+        name: session.user.name,
+        email: session.user.email,
+        role: session.user.role as string,
+      };
 
+      if (roles.length && !roles.includes(req.user.role as UserRole)) {
+        return res.status(403).json({ success: false, message: "Forbidden" });
+      }
       next();
     } catch (err: any) {
       res.status(403).json({ success: false, message: err.message });
